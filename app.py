@@ -20,11 +20,10 @@ def home():
 def predict():
     try:
         # Obtener los datos enviados en el request
-        abdomen = float(request.form['abdomen'])
-        antena = float(request.form['antena'])
+        credit_history = float(request.form['credit_history'])
         
         # Crear un DataFrame con los datos
-        data_df = pd.DataFrame([[abdomen, antena]], columns=['abdomen', 'antena'])
+        data_df = pd.DataFrame([[credit_history]], columns=['Credit_History'])
         app.logger.debug(f'DataFrame creado: {data_df}')
         
         # Realizar predicciones

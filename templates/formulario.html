@@ -1,26 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clasificador de Insectos</title>
+    <title>Aprobación de Préstamos</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .aprobado {
+            color: green;
+            font-weight: bold;
+        }
+        .rechazado {
+            color: rgb(213, 23, 23);
+            font-weight: bold;
+        }
+    </style>
     <script>
         function clasificarInsecto(event) {
             event.preventDefault();
-            const abdomen = document.getElementById('abdomen').value;
-            const antena = document.getElementById('antena').value;
+            const credit_history = document.getElementById('credit_history').value;
 
             fetch('/predict', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `abdomen=${abdomen}&antena=${antena}`,
+                body: `credit_history=${credit_history}`,
             })
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
                     document.getElementById('resultado').innerText = 'Error: ' + data.error;
                 } else {
-                    document.getElementById('resultado').innerText = 'El insecto es un/a ' + data.categoria;
+                    let estadoPrestamo = data.categoria === 'Y' ? 'Aprobado' : 'Rechazado';
+                    let resultadoElement = document.getElementById('resultado');
+
+                    resultadoElement.innerHTML = 'Estado del préstamo: <span class="' + (estadoPrestamo === 'Aprobado' ? 'aprobado' : 'rechazado') + '">' + estadoPrestamo + '</span>';
                 }
             })
             .catch(error => {
@@ -31,14 +44,24 @@
     </script>
 </head>
 <body>
-    <h1>Clasificador de Insectos</h1>
-    <form id="formulario" onsubmit="clasificarInsecto(event)">
-        <label for="abdomen">Longitud del Abdomen:</label>
-        <input type="text" id="abdomen" name="abdomen"><br><br>
-        <label for="antena">Longitud de las Antenas:</label>
-        <input type="text" id="antena" name="antena"><br><br>
-        <input type="submit" value="Enviar">
-    </form>
-    <p id="resultado"></p>
+    <div class="container">
+        <h1 class="my-4">Aprobación de préstamos</h1>
+        <form id="formulario" onsubmit="clasificarInsecto(event)" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label for="credit_history">Historial Crediticio:</label>
+                <input type="text" class="form-control" id="credit_history" name="credit_history" required>
+                <div class="invalid-feedback">
+                    Por favor, ingrese el historial crediticio.
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Predecir</button>
+        </form>
+        <p id="resultado" class="mt-4"></p>
+    </div>
+
+    <!-- Incluir Bootstrap JS y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
