@@ -1,39 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Aprobación de Préstamos</title>
+    <title>Alquiler de bicilcetas</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .aprobado {
-            color: green;
-            font-weight: bold;
-        }
-        .rechazado {
-            color: rgb(213, 23, 23);
-            font-weight: bold;
-        }
-    </style>
     <script>
         function clasificarInsecto(event) {
             event.preventDefault();
-            const credit_history = document.getElementById('credit_history').value;
+            const atemp = document.getElementById('atemp').value;
+            const yr = document.getElementById('yr').value;
+            const season = document.getElementById('season').value;
+            const hum = document.getElementById('hum').value;
+            const weathersit = document.getElementById('weathersit').value;
 
             fetch('/predict', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `credit_history=${credit_history}`,
+                body: `atemp=${atemp}&yr=${yr}&season=${season}&hum=${hum}&weathersit=${weathersit}`,
             })
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
                     document.getElementById('resultado').innerText = 'Error: ' + data.error;
                 } else {
-                    let estadoPrestamo = data.categoria === 'Y' ? 'Aprobado' : 'Rechazado';
-                    let resultadoElement = document.getElementById('resultado');
-
-                    resultadoElement.innerHTML = 'Estado del préstamo: <span class="' + (estadoPrestamo === 'Aprobado' ? 'aprobado' : 'rechazado') + '">' + estadoPrestamo + '</span>';
+                    document.getElementById('resultado').innerText = 'La predicción es ' + data.categoria;
                 }
             })
             .catch(error => {
@@ -45,14 +36,40 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="my-4">Aprobación de préstamos</h1>
+        <h1 class="my-4">Alquiler de bicicletas</h1>
         <form id="formulario" onsubmit="clasificarInsecto(event)" class="needs-validation" novalidate>
             <div class="form-group">
-                <label for="credit_history">Historial Crediticio:</label>
-                <input type="text" class="form-control" id="credit_history" name="credit_history" required>
+
+                <label for="atemp">Sensación térmica:</label>
+                <input type="text" class="form-control" id="atemp" name="atemp" required>
                 <div class="invalid-feedback">
-                    Por favor, ingrese el historial crediticio.
+                    Por favor, ingrese la Sensación térmica.
                 </div>
+
+                <label for="yr">Año:</label>
+                <input type="text" class="form-control" id="yr" name="yr" required>
+                <div class="invalid-feedback">
+                    Por favor, ingrese el año.
+                </div>
+
+                <label for="season">Estación:</label>
+                <input type="text" class="form-control" id="season" name="season" required>
+                <div class="invalid-feedback">
+                    Por favor, ingrese la estación.
+                </div>
+
+                <label for="hum">Humedad:</label>
+                <input type="text" class="form-control" id="hum" name="hum" required>
+                <div class="invalid-feedback">
+                    Por favor, ingrese la humedad.
+                </div>
+
+                <label for="weathersit">Condiciones meteorilógicas:</label>
+                <input type="text" class="form-control" id="weathersit" name="weathersit" required>
+                <div class="invalid-feedback">
+                    Por favor, ingrese las Condiciones meteorilógicas.
+                </div>
+
             </div>
             <button type="submit" class="btn btn-primary">Predecir</button>
         </form>
