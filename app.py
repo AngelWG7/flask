@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, jsonify
 import joblib
 import pandas as pd
-from tensorflow.keras.models import load_model
 import logging
 
 app = Flask(__name__)
@@ -10,8 +9,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 # Cargar el modelo entrenado
-# model = joblib.load('modelo.pkl')
-model = load_model('modelo.h5')
+model = joblib.load('modelo.pkl')
 app.logger.debug('Modelo cargado correctamente.')
 
 @app.route('/')
@@ -22,20 +20,20 @@ def home():
 def predict():
     try:
         # Obtener los datos enviados en el request
-        season = int(request.form['season'])
-        yr = int(request.form['yr'])
-        weathersit = int(request.form['weathersit'])
         atemp = float(request.form['atemp'])
+        yr = int(request.form['yr'])
+        season = int(request.form['season'])
         hum = float(request.form['hum'])
+        windspeed = float(request.form['windspeed'])
+        weathersit = int(request.form['weathersit'])
         
         # Crear un DataFrame con los datos
-        data_df = pd.DataFrame([[atemp, yr, season, hum, weathersit]], columns=['atemp', 'yr', 'season', 'hum', 'weathersit'])
+        data_df = pd.DataFrame([[atemp, yr, season, hum, windspeed, weathersit]], columns=['atemp', 'yr', 'season', 'hum', 'windspeed', 'weathersit'])
         app.logger.debug(f'DataFrame creado: {data_df}')
         
         # Realizar predicciones
         prediction = model.predict(data_df)
         app.logger.debug(f'Predicción: {prediction[0]}')
-        
 
         # Convertir la predicción a una lista para serialización JSON
         prediction_list = prediction[0].tolist()

@@ -10,6 +10,7 @@
             const yr = document.getElementById('yr').value;
             const season = document.getElementById('season').value;
             const hum = document.getElementById('hum').value;
+            const windspeed = document.getElementById('windspeed').value;
             const weathersit = document.getElementById('weathersit').value;
 
             fetch('/predict', {
@@ -17,7 +18,7 @@
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `atemp=${atemp}&yr=${yr}&season=${season}&hum=${hum}&weathersit=${weathersit}`,
+                body: `atemp=${atemp}&yr=${yr}&season=${season}&hum=${hum}&windspeed=${windspeed}&weathersit=${weathersit}`,
             })
             .then(response => response.json())
             .then(data => {
@@ -42,33 +43,21 @@
 
                 <label for="atemp">Sensación térmica:</label>
                 <input type="text" class="form-control" id="atemp" name="atemp" required>
-                <div class="invalid-feedback">
-                    Por favor, ingrese la Sensación térmica.
-                </div>
 
                 <label for="yr">Año:</label>
                 <input type="text" class="form-control" id="yr" name="yr" required>
-                <div class="invalid-feedback">
-                    Por favor, ingrese el año.
-                </div>
 
                 <label for="season">Estación:</label>
                 <input type="text" class="form-control" id="season" name="season" required>
-                <div class="invalid-feedback">
-                    Por favor, ingrese la estación.
-                </div>
 
                 <label for="hum">Humedad:</label>
                 <input type="text" class="form-control" id="hum" name="hum" required>
-                <div class="invalid-feedback">
-                    Por favor, ingrese la humedad.
-                </div>
+
+                <label for="windspeed">Velocidad del viento:</label>
+                <input type="text" class="form-control" id="windspeed" name="windspeed" required>
 
                 <label for="weathersit">Condiciones meteorilógicas:</label>
                 <input type="text" class="form-control" id="weathersit" name="weathersit" required>
-                <div class="invalid-feedback">
-                    Por favor, ingrese las Condiciones meteorilógicas.
-                </div>
 
             </div>
             <button type="submit" class="btn btn-primary">Predecir</button>
