@@ -21,11 +21,11 @@ def predict():
     try:
         # Obtener los datos enviados en el request
         atemp = float(request.form['atemp'])
-        yr = int(request.form['yr'])
-        season = int(request.form['season'])
+        yr = float(request.form['yr'])
+        season = float(request.form['season'])
         hum = float(request.form['hum'])
         windspeed = float(request.form['windspeed'])
-        weathersit = int(request.form['weathersit'])
+        weathersit = float(request.form['weathersit'])
         
         # Crear un DataFrame con los datos
         data_df = pd.DataFrame([[atemp, yr, season, hum, windspeed, weathersit]], columns=['atemp', 'yr', 'season', 'hum', 'windspeed', 'weathersit'])
