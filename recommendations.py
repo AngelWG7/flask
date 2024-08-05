@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import pickle
 import requests
-from sklearn.decomposition import TruncatedSVD
 
 # Cargar el modelo de SVD
 with open('svd_model.pkl', 'rb') as f:
