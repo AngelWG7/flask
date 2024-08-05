@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recomendaciones</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .recommendation-card {
+            max-width: 300px;
+            margin: 15px;
+        }
+        .recommendation-card img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Introduzca su ID de usuario</h1>
+        <form action="/" method="post" class="mb-4">
+            <div class="form-group">
+                <label for="user_id">ID de Usuario:</label>
+                <input type="number" class="form-control" id="user_id" name="user_id" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Obtener recomendaciones</button>
+        </form>
+
+        <div class="d-flex flex-wrap justify-content-center">
+            {% for recommendation in recommendations %}
+                <div class="card recommendation-card">
+                    <img src="{{ recommendation.image_url }}" class="card-img-top" alt="{{ recommendation.product_name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recommendation.product_name }}</h5>
+                        <!-- <p class="card-text">Porcentaje de Relación: {{ recommendation.percentage_relation }}%</p> -->
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
